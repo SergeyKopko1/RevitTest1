@@ -1,29 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
+using RevitTest.ViewModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RevitTest.View.Controls
 {
-    /// <summary>
-    /// Логика взаимодействия для ListBoxControl.xaml
-    /// </summary>
     public partial class ListBoxControl : UserControl
     {
-        public ListBoxControl()
+        public ListBoxControl() 
         {
             InitializeComponent();
-            
+        }
+
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is StackPanel stackPanel && stackPanel.DataContext is WindowFamilyViewModel viewModel)
+            {
+                viewModel.IsSelected = !viewModel.IsSelected;
+
+            }
         }
     }
 }

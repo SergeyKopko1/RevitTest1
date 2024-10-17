@@ -23,5 +23,10 @@ namespace RevitTest.View
         {
             InitializeComponent();
         }
+
+        internal void ShowDialog(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

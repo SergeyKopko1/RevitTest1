@@ -8,8 +8,11 @@ namespace RevitTest.ViewModel
 {
     public class IFamilyViewModel : ViewModelBase
     {
-        string Name { get; }
-        ElementId Id { get; }
+        public string Name { get; }
+        public ElementId Id { get; }
+        public bool IsSelected { get; }
+
+
 
     }
 }

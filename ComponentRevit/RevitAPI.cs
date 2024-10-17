@@ -1,15 +1,15 @@
-﻿using Autodesk.Revit.DB;
+﻿using Autodesk.Revit.Attributes;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
-using Autodesk.Revit.Attributes;
-using System.Collections.Generic;
 using RevitTest.View;
 using RevitTest.ViewModel;
-using System.Windows;
-using RevitTest.View.Controls;
 using System;
+using System.Collections.Generic;
+
 
 namespace RevitTest.ComponentRevit
+
 {
     [Transaction(TransactionMode.Manual)]
     internal class RevitAPI : IExternalCommand
@@ -45,6 +45,7 @@ namespace RevitTest.ComponentRevit
                     ));
 
                     var windows = new List<FamilyInstance>();
+                    
 
                     foreach (var reference in references)
                     {
@@ -55,12 +56,20 @@ namespace RevitTest.ComponentRevit
                         }
                     }
 
+                    // Вывод информации в диалоговое окно
+
+
                     mainViewModel.ClearRevitElements();
                     foreach (var window in windows)
                     {
-                        var viewModel = new WindowFamilyViewModel(window.Name, window.Id);
+                        var viewModel = new WindowFamilyViewModel(window.Name, window.Id, false);
                         mainViewModel.AddRevitElement(viewModel);
+
+
+                        
                     }
+
+                   
                 }
                 catch (Autodesk.Revit.Exceptions.OperationCanceledException)
                 {
