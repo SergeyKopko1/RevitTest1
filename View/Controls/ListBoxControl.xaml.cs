@@ -14,14 +14,5 @@ namespace RevitTest.View.Controls
         {
             InitializeComponent();
         }
-
-        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is StackPanel stackPanel && stackPanel.DataContext is WindowFamilyViewModel viewModel)
-            {
-                viewModel.IsSelected = !viewModel.IsSelected;
-
-            }
-        }
     }
 }

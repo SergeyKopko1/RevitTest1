@@ -4,8 +4,15 @@ using System.Collections.ObjectModel;
 
 namespace RevitTest.ViewModel
 {
-    internal class WindowFamilyViewModel : IFamilyViewModel
+    internal class WindowFamilyViewModel : ViewModelBase, IFamilyViewModel
     {
+        public WindowFamilyViewModel(string name, ElementId id, bool isSelected)
+        {
+            Name = name;
+            Id = id;
+            IsSelected = isSelected;
+        }
+
         public string Name { get; }
         public ElementId Id { get; }
 
@@ -15,20 +22,10 @@ namespace RevitTest.ViewModel
             get => _isSelected;
             set
             {
-                if (_isSelected != value)
-                {
-                    _isSelected = value;
-                    OnPropertyChanged(nameof(IsSelected));
-                }
+                if (_isSelected == value) return;
+                _isSelected = value;
+                OnPropertyChanged(nameof(IsSelected));
             }
         }
-
-        public WindowFamilyViewModel(string name, ElementId id, bool isSelected)
-        {
-            Name = name;
-            Id = id;
-            IsSelected = isSelected;
-        }
-
     }
 }

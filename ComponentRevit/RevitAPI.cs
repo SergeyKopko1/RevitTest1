@@ -1,89 +1,89 @@
-﻿using Autodesk.Revit.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using RevitTest.View;
 using RevitTest.ViewModel;
-using System;
-using System.Collections.Generic;
-
+using OperationCanceledException = Autodesk.Revit.Exceptions.OperationCanceledException;
 
 namespace RevitTest.ComponentRevit
-
 {
     [Transaction(TransactionMode.Manual)]
     internal class RevitAPI : IExternalCommand
     {
-        private MainViewModel mainViewModel;
+        private ExternalCommandData commandData; 
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            var uiapp = commandData.Application;
-            var uidoc = uiapp.ActiveUIDocument;
-            var doc = uidoc.Document;
-            if (uidoc == null || doc == null)
+            this.commandData = commandData;
+            try
             {
-                message = "Не удалось получить доступ к текущему документу.";
-                return Result.Failed;
-            }
+                var uiapp = commandData.Application;
+                var uidoc = uiapp.ActiveUIDocument;
+                var doc = uidoc.Document;
 
-            mainViewModel = new MainViewModel();
-
-            var mainWindow = new Main
-            {
-                DataContext = mainViewModel
-            };
-
-            mainWindow.Show();
-
-            while (mainWindow.IsVisible)
-            {
-                try
+                if (uidoc == null || doc == null)
                 {
-                    var references = uidoc.Selection.PickObjects(ObjectType.Element, new SelectionsFilter(
-                        e => e is FamilyInstance fi && fi.Category.Id.IntegerValue == (int)BuiltInCategory.OST_Windows
-                    ));
-
-                    var windows = new List<FamilyInstance>();
-                    
-
-                    foreach (var reference in references)
-                    {
-                        var window = doc.GetElement(reference) as FamilyInstance;
-                        if (window != null)
-                        {
-                            windows.Add(window);
-                        }
-                    }
-
-                    // Вывод информации в диалоговое окно
-
-
-                    mainViewModel.ClearRevitElements();
-                    foreach (var window in windows)
-                    {
-                        var viewModel = new WindowFamilyViewModel(window.Name, window.Id, false);
-                        mainViewModel.AddRevitElement(viewModel);
-
-
-                        
-                    }
-
-                   
-                }
-                catch (Autodesk.Revit.Exceptions.OperationCanceledException)
-                {
-                    break;
-                }
-                catch (Exception ex)
-                {
-                    message = "Произошла ошибка: " + ex.Message;
+                    message = "Не удалось получить доступ к текущему документу.";
                     return Result.Failed;
                 }
+
+                var mainViewModel = new MainViewModel(uidoc); 
+                var mainWindow = new Main
+                {
+                    DataContext = mainViewModel
+                };
+
+                mainWindow.Show();
+
+                while (mainWindow.IsVisible)
+                {
+                    try
+                    {
+                        var references = uidoc.Selection.PickObjects(ObjectType.Element, new SelectionsFilter(
+                            e => e is FamilyInstance fi &&
+                                 fi.Category.Id.IntegerValue == (int)BuiltInCategory.OST_Windows
+                        ));
+
+                        var windows = new List<FamilyInstance>();
+                        foreach (var reference in references)
+                        {
+                            var window = doc.GetElement(reference) as FamilyInstance;
+                            if (window != null) windows.Add(window);
+                        }
+
+                        mainViewModel.ClearRevitElements();
+                        foreach (var window in windows)
+                        {
+                            var viewModel = new WindowFamilyViewModel(window.Name, window.Id, false);
+                            mainViewModel.AddRevitElement(viewModel);
+                        }
+
+                        if (windows.Count > 0)
+                        {
+                            mainViewModel.ChangeWindowSizeCommand.Execute(null); 
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        message = "Произошла ошибка: " + ex.Message;
+                        return Result.Failed;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
 
             return Result.Succeeded;
         }
-
     }
 }

@@ -114,11 +114,9 @@
     <Compile Include="View\Controls\ButtonControl.xaml.cs">
       <DependentUpon>ButtonControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Controls\CustomListBox.cs" />
     <Compile Include="View\Controls\ListBoxControl.xaml.cs">
       <DependentUpon>ListBoxControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Controls\NumberInfoControl.xaml.cs">
-      <DependentUpon>NumberInfoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Controls\RunButtonControl.xaml.cs">
       <DependentUpon>RunButtonControl.xaml</DependentUpon>
@@ -160,10 +158,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Controls\ListBoxControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Controls\NumberInfoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

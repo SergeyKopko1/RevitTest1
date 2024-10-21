@@ -7,20 +7,22 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
 	<Grid>
-		<ListView x:Name="RevitElementList" Width="360" Height="263"
-                 ItemsSource="{Binding RevitElements}"
-                  SelectedItems="{Binding Path=SelectedItem, 
-                   UpdateSourceTrigger=PropertyChanged}"
-                 SelectionMode="Multiple">
-            <ListView.ItemTemplate>
-				<DataTemplate>
-                    <StackPanel Orientation="Horizontal" MouseDown="StackPanel_MouseDown">
-                        <TextBlock Text="{Binding Id}" Margin="5"/>
-						<TextBlock Text="{Binding Name}" Margin="5"/>
-						<TextBlock Text="{Binding IsSelected}" Margin="5" Foreground="Red"/>
-					</StackPanel>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
-	</Grid>
+        <local:CustomListBox
+        x:Name="CustomListBox"
+        BoundSelectedItems="{Binding SelectedItems}"
+        ItemsSource="{Binding RevitElements}"
+        SelectionMode="Multiple" />
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 20 75">
+            <Label Content="Выбрано элементов:" VerticalAlignment="Center" />
+            <TextBox
+                 Width="50"
+                 Height="25"
+                 Margin="10,0,0,0"
+                 VerticalAlignment="Center"
+                 HorizontalContentAlignment="Center"
+                 IsReadOnly="True"
+                 Text="{Binding ElementName=CustomListBox, Path=SelectedItems.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+    </Grid>
 </UserControl>

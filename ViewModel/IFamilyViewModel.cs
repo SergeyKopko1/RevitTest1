@@ -6,13 +6,10 @@ using System.Linq;
 using System.Text;
 namespace RevitTest.ViewModel
 {
-    public class IFamilyViewModel : ViewModelBase
+    public interface IFamilyViewModel
     {
-        public string Name { get; }
-        public ElementId Id { get; }
-        public bool IsSelected { get; }
-
-
-
+        string Name { get; }
+        ElementId Id { get; }
+        bool IsSelected { get; set; }
     }
 }
