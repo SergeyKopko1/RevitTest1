@@ -1,10 +1,7 @@
-﻿using Autodesk.Revit.DB;
-using RevitTest.ViewModel;
+﻿using RevitTest.ViewModel;
 using System;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Data;
 
 

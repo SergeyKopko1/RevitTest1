@@ -1,73 +1,69 @@
-﻿using Autodesk.Revit.DB;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using RevitTest.ViewModel;
-using System.Windows;
 
 namespace RevitTest.Interface
 {
-    internal class IChangeElementHandler : IExternalEventHandler
+    public class IChangeElementHandler : ViewModelBase, IExternalEventHandler
     {
-        private readonly MainViewModel _mainViewModel;
-
-        public IChangeElementHandler(MainViewModel viewModel)
-        {
-            _mainViewModel = viewModel;
-        }
+        public ObservableCollection<IFamilyViewModel> RevitElements { get; } = new ObservableCollection<IFamilyViewModel>();
 
         public void Execute(UIApplication app)
         {
             var uidoc = app.ActiveUIDocument;
             var doc = uidoc.Document;
 
-            try
+            using (Transaction trans = new Transaction(doc, "Change Element"))
             {
-                var selectedItems = _mainViewModel.SelectedItems;
+                trans.Start();
 
-                if (selectedItems.Count == 0)
+                if (RevitElements.Count == 0)
                 {
-                    MessageBox.Show("Нет выделенных элементов для изменения.");
+                    MessageBox.Show("Нет выделенных элементов для изменения размера.");
                     return;
                 }
 
-                using (Transaction trans = new Transaction(doc, "Изменение окон"))
+                MessageBox.Show($"Изменение размеров для {RevitElements.Count} окон."); 
+
+                foreach (var item in RevitElements)
                 {
-                    trans.Start();
-
-                    foreach (var item in selectedItems)
+                    if (item is WindowFamilyViewModel)
                     {
-                        if (item is WindowFamilyViewModel window)
+                        var window = uidoc.Document.GetElement(item.Id) as FamilyInstance;
+
+                        if (window == null)
                         {
-                            var element = doc.GetElement(window.Id) as FamilyInstance;
-                            if (element == null)
-                            {
-                                MessageBox.Show($"Элемент с ID {window.Id} не найден.");
-                                continue;
-                            }
-
-                            var widthParam = element.get_Parameter(BuiltInParameter.WINDOW_WIDTH);
-                            var heightParam = element.get_Parameter(BuiltInParameter.WINDOW_HEIGHT);
-
-                            if (widthParam != null && heightParam != null)
-                            {
-                                var newWidth = widthParam.AsDouble() * 1.1;  
-                                var newHeight = heightParam.AsDouble() * 1.1; 
-                                widthParam.Set(newWidth);
-                                heightParam.Set(newHeight);
-                            }
+                            MessageBox.Show($"Окно с ID {item.Id} не найдено.");
+                            continue;
                         }
-                    }
 
-                    trans.Commit();
+                        var widthWindow = window.get_Parameter(BuiltInParameter.WINDOW_WIDTH);
+                        var heightWindow = window.get_Parameter(BuiltInParameter.WINDOW_HEIGHT);
+
+                        if (widthWindow == null || heightWindow == null)
+                        {
+                            MessageBox.Show($"Окно с ID {item.Id} не имеет параметров ширины или высоты.");
+                            continue;
+                        }
+
+                        var newHeight = heightWindow.AsDouble() * 2;
+                        var newWidth = widthWindow.AsDouble() * 2;
+
+                        widthWindow.Set(newWidth);
+                        heightWindow.Set(newHeight);
+                    }
                 }
-            }
-            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
-            {
+
+                trans.Commit();
             }
         }
 
+
         public string GetName()
         {
-            return "Изменение элементов";
+            return "Change Element External Event Handler";
         }
     }
 }

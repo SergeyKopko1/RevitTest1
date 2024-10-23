@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Autodesk.Revit.UI;
+using RevitTest.Interface;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
-using Autodesk.Revit.UI;
-using RevitTest.Interface;
-using RevitTest.Model;
 
 namespace RevitTest.ViewModel
 {
@@ -15,8 +12,8 @@ namespace RevitTest.ViewModel
         private IPickElementHandler _pickElementHandler;
         private ExternalEvent _pickElementEvent;
 
-        private IChangeElementHandler _changeElementHandler; 
-        private ExternalEvent _changeElementEvent;           
+        private IChangeElementHandler _changeElementHandler;
+        private ExternalEvent _changeElementEvent;
 
         private ObservableCollection<IFamilyViewModel> _revitElements = new ObservableCollection<IFamilyViewModel>();
         public ObservableCollection<IFamilyViewModel> RevitElements
@@ -48,8 +45,8 @@ namespace RevitTest.ViewModel
             _pickElementHandler = new IPickElementHandler(this);
             _pickElementEvent = ExternalEvent.Create(_pickElementHandler);
 
-            _changeElementHandler = new IChangeElementHandler(this); 
-            _changeElementEvent = ExternalEvent.Create(_changeElementHandler); 
+            _changeElementHandler = new IChangeElementHandler();
+            _changeElementEvent = ExternalEvent.Create(_changeElementHandler);
 
             PickCommand = new RelayCommand(OnPickCommandExecuted);
             ChangeCommand = new RelayCommand(OnChangeCommandExecuted);
@@ -70,13 +67,13 @@ namespace RevitTest.ViewModel
 
             if (SelectedItems.Count == 0)
             {
-                MessageBox.Show("Нет выделенных элементов для изменения.");
+                MessageBox.Show("Нет выделенных элементов для изменения11.");
                 return;
             }
 
-            MessageBox.Show($"Количество выделенных элементов: {SelectedItems.Count}");
+           
 
-            _changeElementEvent.Raise(); 
+            _changeElementEvent.Raise();
         }
 
 
@@ -108,10 +105,6 @@ namespace RevitTest.ViewModel
 
             public void Execute(object parameter) => _execute?.Invoke();
 
-            public void RaiseCanExecuteChanged()
-            {
-                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-            }
         }
 
     }

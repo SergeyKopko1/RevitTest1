@@ -18,6 +18,6 @@ public class SelectionsFilter : ISelectionFilter
 
     public bool AllowReference(Reference reference, XYZ position)
     {
-        return false; 
+        return false;
     }
 }

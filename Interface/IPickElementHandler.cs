@@ -1,7 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
-using RevitTest.ComponentRevit.Extensions.ExtenstionSelections;
 using RevitTest.ViewModel;
 using System.Linq;
 using System.Windows;
@@ -10,7 +9,7 @@ namespace RevitTest.Interface
 {
     internal class IPickElementHandler : IExternalEventHandler
     {
-        private readonly MainViewModel _mainViewModel;
+        private MainViewModel _mainViewModel;
 
         public IPickElementHandler(MainViewModel viewModel)
         {
@@ -24,6 +23,7 @@ namespace RevitTest.Interface
 
             try
             {
+
                 var references = uidoc.Selection.PickObjects(ObjectType.Element, new SelectionsFilter(
                     e => e is FamilyInstance fi &&
                          fi.Category.Id.IntegerValue == (int)BuiltInCategory.OST_Windows
@@ -31,12 +31,13 @@ namespace RevitTest.Interface
 
                 var selectedElementIds = references.Select(r => r.ElementId).ToList();
 
-                
+
                 _mainViewModel.ClearRevitElements();
 
                 foreach (var elementId in selectedElementIds)
                 {
-                    if (doc.GetElement(elementId) is FamilyInstance windowFromDoc)
+                    var windowFromDoc = doc.GetElement(elementId) as FamilyInstance;
+                    if (windowFromDoc != null)
                     {
                         var viewModel = new WindowFamilyViewModel(windowFromDoc.Name, windowFromDoc.Id, false);
                         _mainViewModel.AddRevitElement(viewModel);
@@ -47,14 +48,18 @@ namespace RevitTest.Interface
                     }
                 }
 
-            }
 
+                _mainViewModel.SelectedItems.Clear();
+                foreach (var element in _mainViewModel.RevitElements)
+                {
+                    _mainViewModel.SelectedItems.Add(element);
+                }
+            }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {
-                
+
             }
         }
-
 
         public string GetName()
         {

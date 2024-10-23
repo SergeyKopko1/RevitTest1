@@ -1,6 +1,4 @@
 ﻿using Autodesk.Revit.DB;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace RevitTest.ViewModel
 {
