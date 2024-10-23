@@ -48,8 +48,8 @@ namespace RevitTest.ViewModel
             _pickElementHandler = new IPickElementHandler(this);
             _pickElementEvent = ExternalEvent.Create(_pickElementHandler);
 
-            _changeElementHandler = new IChangeElementHandler(this); // Изменение здесь
-            _changeElementEvent = ExternalEvent.Create(_changeElementHandler); // Изменение здесь
+            _changeElementHandler = new IChangeElementHandler(this); 
+            _changeElementEvent = ExternalEvent.Create(_changeElementHandler); 
 
             PickCommand = new RelayCommand(OnPickCommandExecuted);
             ChangeCommand = new RelayCommand(OnChangeCommandExecuted);
