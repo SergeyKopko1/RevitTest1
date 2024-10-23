@@ -48,8 +48,8 @@ namespace RevitTest.ViewModel
             _pickElementHandler = new IPickElementHandler(this);
             _pickElementEvent = ExternalEvent.Create(_pickElementHandler);
 
-            _changeElementHandler = new IChangeElementHandler(this); // Изменение здесь
-            _changeElementEvent = ExternalEvent.Create(_changeElementHandler); // Изменение здесь
+            _changeElementHandler = new IChangeElementHandler(this); 
+            _changeElementEvent = ExternalEvent.Create(_changeElementHandler); 
 
             PickCommand = new RelayCommand(OnPickCommandExecuted);
             ChangeCommand = new RelayCommand(OnChangeCommandExecuted);
@@ -76,7 +76,7 @@ namespace RevitTest.ViewModel
 
             MessageBox.Show($"Количество выделенных элементов: {SelectedItems.Count}");
 
-            _changeElementEvent.Raise();  // Используем внешнее событие для изменения элементов
+            _changeElementEvent.Raise(); 
         }
 
 
