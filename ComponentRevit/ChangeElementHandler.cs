@@ -1,14 +1,15 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
-using Autodesk.Revit.DB;
+﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using RevitTest.ViewModel;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
 
-namespace RevitTest.Interface
+namespace RevitTest.ComponentRevit
 {
-    public class IChangeElementHandler : ViewModelBase, IExternalEventHandler
+    public class ChangeElementHandler : IExternalEventHandler
     {
-        public ObservableCollection<IFamilyViewModel> RevitElements { get; } = new ObservableCollection<IFamilyViewModel>();
+        public ICollection<IFamilyViewModel> RevitElements { get; set; } = new Collection<IFamilyViewModel>();
 
         public void Execute(UIApplication app)
         {
@@ -25,8 +26,6 @@ namespace RevitTest.Interface
                     return;
                 }
 
-                MessageBox.Show($"Изменение размеров для {RevitElements.Count} окон."); 
-
                 foreach (var item in RevitElements)
                 {
                     if (item is WindowFamilyViewModel)
@@ -38,7 +37,7 @@ namespace RevitTest.Interface
                             MessageBox.Show($"Окно с ID {item.Id} не найдено.");
                             continue;
                         }
-
+                        
                         var widthWindow = window.get_Parameter(BuiltInParameter.WINDOW_WIDTH);
                         var heightWindow = window.get_Parameter(BuiltInParameter.WINDOW_HEIGHT);
 
@@ -58,6 +57,7 @@ namespace RevitTest.Interface
 
                 trans.Commit();
             }
+            MessageBox.Show($"Изменение размеров для {RevitElements.Count} окон."); 
         }
 
 

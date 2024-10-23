@@ -1,14 +1,53 @@
-﻿<Window x:Class="RevitTest.View.Main"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RevitTest.View.Controls"
-        mc:Ignorable="d"
-        Title="Main" Height="510" Width="400">
-    <Grid Background="#D9D9D9">
-        <local:ListBoxControl />
-        <local:RunButtonControl />
+﻿<Window
+    x:Class="RevitTest.View.Main"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Main"
+    Width="400"
+    Height="510"
+    mc:Ignorable="d">
 
+    <Grid Background="#D9D9D9">
+        <ListBox
+            x:Name="ListBox"
+            ItemsSource="{Binding RevitElements}"
+            SelectionMode="Multiple" />
+
+        <StackPanel>
+            <Button
+                Width="170"
+                Height="25"
+                Margin="15,15,0,0"
+                HorizontalAlignment="Left"
+                Command="{Binding PickCommand}"
+                Content="Выбрать элементы" />
+        </StackPanel>
+
+        <StackPanel
+            Margin="0,0,20,75"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Label VerticalAlignment="Center" Content="Выбрано элементов:" />
+            <TextBox
+                Width="50"
+                Height="25"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                IsReadOnly="True"
+                Text="{Binding ElementName=ListBox, Path=SelectedItems.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <Button
+            Width="360"
+            Height="29"
+            Margin="0,0,0,20"
+            VerticalAlignment="Bottom"
+            Command="{Binding ChangeCommand}"
+            CommandParameter="{Binding ElementName=ListBox, Path=SelectedItems}"
+            Content="Выполнить" />
     </Grid>
 </Window>

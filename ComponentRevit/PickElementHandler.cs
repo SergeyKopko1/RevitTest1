@@ -1,17 +1,18 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using RevitTest.ComponentRevit.Extensions.ExtenstionSelections;
 using RevitTest.ViewModel;
 using System.Linq;
 using System.Windows;
 
-namespace RevitTest.Interface
+namespace RevitTest.ComponentRevit
 {
-    internal class IPickElementHandler : IExternalEventHandler
+    internal class PickElementHandler : IExternalEventHandler
     {
         private MainViewModel _mainViewModel;
 
-        public IPickElementHandler(MainViewModel viewModel)
+        public PickElementHandler(MainViewModel viewModel)
         {
             _mainViewModel = viewModel;
         }
@@ -49,11 +50,11 @@ namespace RevitTest.Interface
                 }
 
 
-                _mainViewModel.SelectedItems.Clear();
-                foreach (var element in _mainViewModel.RevitElements)
-                {
-                    _mainViewModel.SelectedItems.Add(element);
-                }
+                // _mainViewModel.SelectedItems.Clear();
+                // foreach (var element in _mainViewModel.RevitElements)
+                // {
+                //     _mainViewModel.SelectedItems.Add(element);
+                // }
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {

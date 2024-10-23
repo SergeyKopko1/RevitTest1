@@ -2,22 +2,25 @@
 using Autodesk.Revit.UI.Selection;
 using System;
 
-public class SelectionsFilter : ISelectionFilter
+namespace RevitTest.ComponentRevit.Extensions.ExtenstionSelections
 {
-    private readonly Func<Element, bool> _criteria;
-
-    public SelectionsFilter(Func<Element, bool> criteria)
+    public class SelectionsFilter : ISelectionFilter
     {
-        _criteria = criteria;
-    }
+        private readonly Func<Element, bool> _criteria;
 
-    public bool AllowElement(Element elem)
-    {
-        return _criteria(elem);
-    }
+        public SelectionsFilter(Func<Element, bool> criteria)
+        {
+            _criteria = criteria;
+        }
 
-    public bool AllowReference(Reference reference, XYZ position)
-    {
-        return false;
+        public bool AllowElement(Element elem)
+        {
+            return _criteria(elem);
+        }
+
+        public bool AllowReference(Reference reference, XYZ position)
+        {
+            return false;
+        }
     }
 }
