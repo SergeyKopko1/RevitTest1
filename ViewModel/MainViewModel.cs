@@ -76,7 +76,7 @@ namespace RevitTest.ViewModel
 
             MessageBox.Show($"Количество выделенных элементов: {SelectedItems.Count}");
 
-            _changeElementEvent.Raise();  // Используем внешнее событие для изменения элементов
+            _changeElementEvent.Raise(); 
         }
 
 
