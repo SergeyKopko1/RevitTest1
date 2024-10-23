@@ -1,6 +1,55 @@
+# Visual Studio specific
 .vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
+# ReSharper specific
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Build folders
 bin/
 obj/
+TestResults/
+Build/
+AppPackages/
 
+# Package directories
 *.nupkg
+*.snupkg
+packages/
+$tf/
+
+# Logs, databases, binaries, and backup files
+*.log
+*.ds_store
+*.pdb
+*.cache
+*.bak
+*.tmp
+*.old
+*.backup
+*.orig
+*.rej
+
+# Rider specific
+.idea/
+.idea_modules/
+*.sln.iml
+
+# Entity Framework specific
+*.edmx.sql
+*.dbmdl
+*.jfm
+
+# Auto-generated files
+Generated_Code/
+EF.Reverse.POCO.v3.ttinclude
+
+# Configurations
+App.config
+Web.config
+appsettings*.json
