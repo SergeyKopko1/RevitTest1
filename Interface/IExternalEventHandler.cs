@@ -5,11 +5,11 @@ using System.Windows;
 
 namespace RevitTest.Interface
 {
-    internal class ChangeElementHandler : IExternalEventHandler
+    internal class IChangeElementHandler : IExternalEventHandler
     {
         private readonly MainViewModel _mainViewModel;
 
-        public ChangeElementHandler(MainViewModel viewModel)
+        public IChangeElementHandler(MainViewModel viewModel)
         {
             _mainViewModel = viewModel;
         }

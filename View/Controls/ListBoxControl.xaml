@@ -4,25 +4,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:RevitTest.View.Controls"
+             xmlns:bindingMain="clr-namespace:RevitTest.ViewModel"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-	<Grid>
-        <local:CustomListBox
-        x:Name="CustomListBox"
-        BoundSelectedItems="{Binding SelectedItems}"
-        ItemsSource="{Binding RevitElements}"
-        SelectionMode="Multiple" />
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 20 75">
-            <Label Content="Выбрано элементов:" VerticalAlignment="Center" />
-            <TextBox
-                 Width="50"
-                 Height="25"
-                 Margin="10,0,0,0"
-                 VerticalAlignment="Center"
-                 HorizontalContentAlignment="Center"
-                 IsReadOnly="True"
-                 Text="{Binding ElementName=CustomListBox, Path=SelectedItems.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>
-    </Grid>
+	<UserControl.DataContext>
+		<bindingMain:MainViewModel />
+	</UserControl.DataContext>
+
+	<Grid>
+		<local:CustomListBox
+            x:Name="CustomListBox"
+            ItemsSource="{Binding RevitElements}"
+            BoundSelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+            SelectionMode="Multiple" />
+
+		<StackPanel>
+			<Button Content="Выбрать элементы"
+                    Width="170"
+                    Height="25"
+                    HorizontalAlignment="Left"
+                    Margin="15 15 0 0"
+                    Command="{Binding PickCommand}"/>
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 20 75">
+			<Label Content="Выбрано элементов:" VerticalAlignment="Center" />
+			<TextBox
+                Width="50"
+                Height="25"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                IsReadOnly="True"
+                Text="{Binding ElementName=CustomListBox, Path=SelectedItems.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+		</StackPanel>
+	</Grid>
 </UserControl>

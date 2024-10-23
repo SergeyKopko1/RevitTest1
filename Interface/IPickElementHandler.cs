@@ -8,11 +8,11 @@ using System.Windows;
 
 namespace RevitTest.Interface
 {
-    internal class PickElementHandler : IExternalEventHandler
+    internal class IPickElementHandler : IExternalEventHandler
     {
         private readonly MainViewModel _mainViewModel;
 
-        public PickElementHandler(MainViewModel viewModel)
+        public IPickElementHandler(MainViewModel viewModel)
         {
             _mainViewModel = viewModel;
         }
