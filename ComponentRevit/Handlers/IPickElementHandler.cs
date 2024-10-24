@@ -5,13 +5,9 @@ using RevitTest.ComponentRevit.Extensions.ExtenstionSelections;
 using RevitTest.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 
-<<<<<<<< HEAD:ComponentRevit/Handlers/IPickElementHandler.cs
-namespace RevitTest.Handlers
-========
-namespace RevitTest.ComponentRevit
->>>>>>>> 6c556d0a42a0eac62ebf137197112da9d73bf5b9:ComponentRevit/PickElementHandler.cs
+namespace RevitTest.ComponentRevit.Handlers
+
 {
     internal class PickElementHandler : IExternalEventHandler
     {
@@ -64,19 +60,6 @@ namespace RevitTest.ComponentRevit
                         _mainViewModel.AddRevitElement(viewModel);
                     }
                 }
-
-
-<<<<<<<< HEAD:ComponentRevit/Handlers/IPickElementHandler.cs
-
-
-
-========
-                // _mainViewModel.SelectedItems.Clear();
-                // foreach (var element in _mainViewModel.RevitElements)
-                // {
-                //     _mainViewModel.SelectedItems.Add(element);
-                // }
->>>>>>>> 6c556d0a42a0eac62ebf137197112da9d73bf5b9:ComponentRevit/PickElementHandler.cs
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {

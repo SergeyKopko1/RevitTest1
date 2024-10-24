@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
-namespace RevitTest.Handlers
+namespace RevitTest.ComponentRevit.Handlers
 {
     public class ChangeElementHandler : IExternalEventHandler
     {

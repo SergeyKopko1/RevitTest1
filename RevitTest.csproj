@@ -106,8 +106,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ComponentRevit\Extensions\ExtenstionSelections\SelectionsFilter.cs" />
-    <Compile Include="ComponentRevit\ChangeElementHandler.cs" />
-    <Compile Include="ComponentRevit\PickElementHandler.cs" />
     <Compile Include="ComponentRevit\RevitAPI.cs" />
     <Compile Include="Converter\IntToBooleanConverter.cs" />
     <Compile Include="Converter\SelectedItemsCountConverter.cs" />
