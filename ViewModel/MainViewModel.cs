@@ -1,6 +1,9 @@
 ﻿using Autodesk.Revit.UI;
 using RevitTest.ComponentRevit;
+<<<<<<< HEAD
 using RevitTest.Handlers;
+=======
+>>>>>>> 6c556d0a42a0eac62ebf137197112da9d73bf5b9
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,11 +57,12 @@ namespace RevitTest.ViewModel
             PickCommand = new RelayCommand(OnPickCommandExecuted);
             ChangeCommand = new RelayCommand<IList>(OnChangeCommandExecuted);
         }
-
+        
         private void OnPickCommandExecuted()
         {
             _pickElementEvent.Raise();
         }
+<<<<<<< HEAD
 
         private void OnChangeCommandExecuted(IList selectedItems)
         {
@@ -70,11 +74,28 @@ namespace RevitTest.ViewModel
 
             SelectedItems.Clear();
             foreach (IFamilyTypeViewModel item in selectedItems)
+=======
+        
+        private void OnChangeCommandExecuted(IList selectedItems)
+        {
+            if (selectedItems.Count == 0)
+>>>>>>> 6c556d0a42a0eac62ebf137197112da9d73bf5b9
             {
                 SelectedItems.Add(item);
             }
+<<<<<<< HEAD
 
             _changeElementHandler.SelectedItems = SelectedItems;
+=======
+            
+            SelectedItems.Clear();
+            foreach (IFamilyViewModel item in selectedItems)
+            {
+                SelectedItems.Add(item);
+            }
+            
+            _changeElementHandler.RevitElements = SelectedItems;
+>>>>>>> 6c556d0a42a0eac62ebf137197112da9d73bf5b9
             _changeElementEvent.Raise();
         }
 
@@ -107,6 +128,35 @@ namespace RevitTest.ViewModel
 
             public void Execute(object parameter) => _execute?.Invoke();
 
+        }
+        
+        public class RelayCommand<T> : ICommand
+        {
+            private readonly Action<T> _execute;
+            private readonly Func<T, bool> _canExecute;
+
+            public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
+            {
+                _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+                _canExecute = canExecute;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return _canExecute == null || _canExecute((T)parameter);
+            }
+
+            public void Execute(object parameter)
+            {
+                _execute((T)parameter);
+            }
+
+            public event EventHandler CanExecuteChanged;
+
+            public void RaiseCanExecuteChanged()
+            {
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         public class RelayCommand<T> : ICommand

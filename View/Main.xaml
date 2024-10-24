@@ -4,11 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+<<<<<<< HEAD
     xmlns:local="clr-namespace:RevitTest.Converter"
+=======
+>>>>>>> 6c556d0a42a0eac62ebf137197112da9d73bf5b9
     Title="Main"
     Width="400"
     Height="510"
     mc:Ignorable="d">
+<<<<<<< HEAD
     <Window.Resources>
         <local:IntToBooleanConverter x:Key="IntToBooleanConverter" />
         <Style x:Key="ListBoxStyle">
@@ -65,6 +69,29 @@
         <StackPanel
             Style="{StaticResource SelectedElementsStyle}"
 
+=======
+
+    <Grid Background="#D9D9D9">
+        <ListBox
+            x:Name="ListBox"
+            ItemsSource="{Binding RevitElements}"
+            SelectionMode="Multiple" />
+
+        <StackPanel>
+            <Button
+                Width="170"
+                Height="25"
+                Margin="15,15,0,0"
+                HorizontalAlignment="Left"
+                Command="{Binding PickCommand}"
+                Content="Выбрать элементы" />
+        </StackPanel>
+
+        <StackPanel
+            Margin="0,0,20,75"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+>>>>>>> 6c556d0a42a0eac62ebf137197112da9d73bf5b9
             Orientation="Horizontal">
             <Label VerticalAlignment="Center" Content="Выбрано элементов:" />
             <TextBox
@@ -78,8 +105,15 @@
         </StackPanel>
 
         <Button
+<<<<<<< HEAD
             Style="{StaticResource ChangeButtonStyle}"
             IsEnabled="{Binding ElementName=ListBox, Path=SelectedItems.Count, Converter={StaticResource IntToBooleanConverter}}"
+=======
+            Width="360"
+            Height="29"
+            Margin="0,0,0,20"
+            VerticalAlignment="Bottom"
+>>>>>>> 6c556d0a42a0eac62ebf137197112da9d73bf5b9
             Command="{Binding ChangeCommand}"
             CommandParameter="{Binding ElementName=ListBox, Path=SelectedItems}"
             Content="Выполнить" />
