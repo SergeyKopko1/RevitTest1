@@ -11,7 +11,7 @@ namespace RevitTest.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is ObservableCollection<IFamilyViewModel> selectedItem)
+            if (value is ObservableCollection<IFamilyTypeViewModel> selectedItem)
             {
                 return selectedItem;
             }

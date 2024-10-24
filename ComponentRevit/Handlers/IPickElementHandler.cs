@@ -2,16 +2,17 @@
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using RevitTest.ViewModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace RevitTest.Interface
+namespace RevitTest.Handlers
 {
-    internal class IPickElementHandler : IExternalEventHandler
+    internal class PickElementHandler : IExternalEventHandler
     {
-        private MainViewModel _mainViewModel;
+        private readonly MainViewModel _mainViewModel;
 
-        public IPickElementHandler(MainViewModel viewModel)
+        public PickElementHandler(MainViewModel viewModel)
         {
             _mainViewModel = viewModel;
         }
@@ -34,26 +35,35 @@ namespace RevitTest.Interface
 
                 _mainViewModel.ClearRevitElements();
 
+                HashSet<ElementId> uniqueTypes = new HashSet<ElementId>();
+
                 foreach (var elementId in selectedElementIds)
                 {
-                    var windowFromDoc = doc.GetElement(elementId) as FamilyInstance;
-                    if (windowFromDoc != null)
+                    var windowFromDoc = doc.GetElement(elementId);
+                    var windowTypeFromDoc = windowFromDoc.GetTypeId();
+                    uniqueTypes.Add(windowTypeFromDoc);
+                }
+
+                foreach (var uniqueTypeId in uniqueTypes)
+                {
+
+                    var windowTypeElement = doc.GetElement(uniqueTypeId) as FamilySymbol;
+
+                    if (windowTypeElement != null)
                     {
-                        var viewModel = new WindowFamilyViewModel(windowFromDoc.Name, windowFromDoc.Id, false);
+                        string name = windowTypeElement.Name;
+                        double width = windowTypeElement.get_Parameter(BuiltInParameter.WINDOW_WIDTH).AsDouble();
+                        double height = windowTypeElement.get_Parameter(BuiltInParameter.WINDOW_HEIGHT).AsDouble(); 
+
+                        var viewModel = new WindowFamilyTypeViewModel(name, uniqueTypeId, false, width, height);
                         _mainViewModel.AddRevitElement(viewModel);
                     }
-                    else
-                    {
-                        MessageBox.Show($"Элемент с ID {elementId} больше не доступен.");
-                    }
                 }
 
 
-                _mainViewModel.SelectedItems.Clear();
-                foreach (var element in _mainViewModel.RevitElements)
-                {
-                    _mainViewModel.SelectedItems.Add(element);
-                }
+
+
+
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {

@@ -1,14 +1,87 @@
-﻿<Window x:Class="RevitTest.View.Main"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RevitTest.View.Controls"
-        mc:Ignorable="d"
-        Title="Main" Height="510" Width="400">
+﻿<Window
+    x:Class="RevitTest.View.Main"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:RevitTest.Converter"
+    Title="Main"
+    Width="400"
+    Height="510"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <local:IntToBooleanConverter x:Key="IntToBooleanConverter" />
+        <Style x:Key="ListBoxStyle">
+            <Setter Property="Control.Margin" Value="20 60 20 120" />
+            <Setter Property="Control.Width"  Value="360" />
+            <Setter Property="Control.Height"  Value="283" />
+<Setter Property="Control.HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Control.VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="SelectedElementsStyle">
+            <Setter Property="Control.HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Control.VerticalAlignment" Value="Bottom" />
+            <Setter Property="Control.Margin" Value="195 0 0 75" /> 
+        </Style>
+        <Style x:Key="ChangeButtonStyle">
+            <Setter Property="Control.Width" Value="360" />
+            <Setter Property="Control.Height" Value="29" />
+            <Setter Property="Control.Margin" Value="0 0 0 20" />
+            <Setter Property="Control.VerticalAlignment" Value="Bottom" />
+        </Style>
+    </Window.Resources>
     <Grid Background="#D9D9D9">
-        <local:ListBoxControl />
-        <local:RunButtonControl />
+        <StackPanel>
+            <Button
+                Width="170"
+                Height="25"
+                Margin="15,15,0,0"
+                HorizontalAlignment="Left"
+                Command="{Binding PickCommand}"
+                Content="Выбрать элементы" />
+        </StackPanel>
+        <ListBox
+            Style="{StaticResource ListBoxStyle}"
+            x:Name="ListBox"
+            ItemsSource="{Binding RevitElements}"
+            SelectionMode="Multiple">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="Название типа окна: {0} (W: {1} H: {2})">
+                                <Binding Path="Name" />
+                                <Binding Path="Width" />
+                                <Binding Path="Height" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
+
+
+        <StackPanel
+            Style="{StaticResource SelectedElementsStyle}"
+
+            Orientation="Horizontal">
+            <Label VerticalAlignment="Center" Content="Выбрано элементов:" />
+            <TextBox
+                Width="50"
+                Height="25"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                IsReadOnly="True"
+                Text="{Binding ElementName=ListBox, Path=SelectedItems.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <Button
+            Style="{StaticResource ChangeButtonStyle}"
+            IsEnabled="{Binding ElementName=ListBox, Path=SelectedItems.Count, Converter={StaticResource IntToBooleanConverter}}"
+            Command="{Binding ChangeCommand}"
+            CommandParameter="{Binding ElementName=ListBox, Path=SelectedItems}"
+            Content="Выполнить" />
     </Grid>
 </Window>
