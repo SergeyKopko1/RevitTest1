@@ -7,9 +7,7 @@ namespace RevitTest.ViewModel
         ElementId Id { get; }
         bool IsSelected { get; set; }
 
-        double Width { get; }
 
-        double Height { get; }
      
     }
 }

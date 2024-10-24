@@ -53,10 +53,9 @@ namespace RevitTest.ComponentRevit.Handlers
                     if (windowTypeElement != null)
                     {
                         string name = windowTypeElement.Name;
-                        double width = windowTypeElement.get_Parameter(BuiltInParameter.WINDOW_WIDTH).AsDouble();
-                        double height = windowTypeElement.get_Parameter(BuiltInParameter.WINDOW_HEIGHT).AsDouble(); 
+      
 
-                        var viewModel = new WindowFamilyTypeViewModel(name, uniqueTypeId, false, width, height);
+                        var viewModel = new WindowFamilyTypeViewModel(name, uniqueTypeId, false);
                         _mainViewModel.AddRevitElement(viewModel);
                     }
                 }

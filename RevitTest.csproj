@@ -109,14 +109,13 @@
     <Compile Include="ComponentRevit\RevitAPI.cs" />
     <Compile Include="Converter\IntToBooleanConverter.cs" />
     <Compile Include="Converter\SelectedItemsCountConverter.cs" />
-    <Compile Include="ComponentRevit\Handlers\IExternalEventHandler.cs" />
-    <Compile Include="ComponentRevit\Handlers\IPickElementHandler.cs" />
+    <Compile Include="ComponentRevit\Handlers\ExternalEventHandler.cs" />
+    <Compile Include="ComponentRevit\Handlers\PickElementHandler.cs" />
     <Compile Include="Model\RevitElementModel.cs" />
     <Compile Include="ViewModel\IFamilyTypeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\WindowFamilyTypeViewModel.cs" />
-    <Compile Include="ViewModel\WindowFamilyViewModel.cs" />
     <Compile Include="View\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>

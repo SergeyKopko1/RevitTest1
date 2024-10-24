@@ -1,10 +1,7 @@
 ﻿using Autodesk.Revit.UI;
-using RevitTest.ComponentRevit;
 using RevitTest.ComponentRevit.Handlers;
-
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -72,6 +69,10 @@ namespace RevitTest.ViewModel
 
             SelectedItems.Clear();
             foreach (IFamilyTypeViewModel item in selectedItems)
+            {
+                SelectedItems.Add(item);
+            }
+            _changeElementHandler.SelectedItems = SelectedItems;
             _changeElementEvent.Raise();
         }
 
