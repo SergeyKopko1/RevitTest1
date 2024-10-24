@@ -106,25 +106,19 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ComponentRevit\Extensions\ExtenstionSelections\SelectionsFilter.cs" />
-    <Compile Include="ComponentRevit\ChangeElementHandler.cs" />
-    <Compile Include="ComponentRevit\PickElementHandler.cs" />
     <Compile Include="ComponentRevit\RevitAPI.cs" />
     <Compile Include="Converter\IntToBooleanConverter.cs" />
     <Compile Include="Converter\SelectedItemsCountConverter.cs" />
-<<<<<<< HEAD
+
     <Compile Include="ComponentRevit\Handlers\IExternalEventHandler.cs" />
     <Compile Include="ComponentRevit\Handlers\IPickElementHandler.cs" />
-=======
->>>>>>> 6c556d0a42a0eac62ebf137197112da9d73bf5b9
+
     <Compile Include="Model\RevitElementModel.cs" />
     <Compile Include="ViewModel\IFamilyTypeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-<<<<<<< HEAD
     <Compile Include="ViewModel\WindowFamilyTypeViewModel.cs" />
-=======
-    <Compile Include="ViewModel\WindowFamilyViewModel.cs" />
->>>>>>> 6c556d0a42a0eac62ebf137197112da9d73bf5b9
+
     <Compile Include="View\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>

@@ -5,12 +5,8 @@ using RevitTest.ComponentRevit.Extensions.ExtenstionSelections;
 using RevitTest.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 
-
-namespace RevitTest.Handlers
-
-namespace RevitTest.ComponentRevit
+namespace RevitTest.ComponentRevit.Handlers
 
 {
     internal class PickElementHandler : IExternalEventHandler
