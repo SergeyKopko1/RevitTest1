@@ -51,6 +51,9 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors">
+      <HintPath>C:\ProgramData\Autodesk\Revit\Addins\2021\Eneca\ClashesManager\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2021\RevitAPI.dll</HintPath>
     </Reference>
@@ -103,23 +106,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ComponentRevit\Extensions\ExtenstionSelections\SelectionsFilter.cs" />
+    <Compile Include="ComponentRevit\ChangeElementHandler.cs" />
+    <Compile Include="ComponentRevit\PickElementHandler.cs" />
     <Compile Include="ComponentRevit\RevitAPI.cs" />
     <Compile Include="Converter\IntToBooleanConverter.cs" />
     <Compile Include="Converter\SelectedItemsCountConverter.cs" />
-    <Compile Include="Interface\IExternalEventHandler.cs" />
-    <Compile Include="Interface\IPickElementHandler.cs" />
     <Compile Include="Model\RevitElementModel.cs" />
     <Compile Include="ViewModel\IFamilyViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\WindowFamilyViewModel.cs" />
-    <Compile Include="View\Controls\CustomListBox.cs" />
-    <Compile Include="View\Controls\ListBoxControl.xaml.cs">
-      <DependentUpon>ListBoxControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Controls\RunButtonControl.xaml.cs">
-      <DependentUpon>RunButtonControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
@@ -152,14 +148,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="View\Controls\ListBoxControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Controls\RunButtonControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Main.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,6 +1,8 @@
 ﻿using Autodesk.Revit.UI;
-using RevitTest.Interface;
+using RevitTest.ComponentRevit;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -9,10 +11,10 @@ namespace RevitTest.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private IPickElementHandler _pickElementHandler;
+        private PickElementHandler _pickElementHandler;
         private ExternalEvent _pickElementEvent;
 
-        private IChangeElementHandler _changeElementHandler;
+        private ChangeElementHandler _changeElementHandler;
         private ExternalEvent _changeElementEvent;
 
         private ObservableCollection<IFamilyViewModel> _revitElements = new ObservableCollection<IFamilyViewModel>();
@@ -42,37 +44,36 @@ namespace RevitTest.ViewModel
 
         public MainViewModel()
         {
-            _pickElementHandler = new IPickElementHandler(this);
+            _pickElementHandler = new PickElementHandler(this);
             _pickElementEvent = ExternalEvent.Create(_pickElementHandler);
 
-            _changeElementHandler = new IChangeElementHandler();
+            _changeElementHandler = new ChangeElementHandler();
             _changeElementEvent = ExternalEvent.Create(_changeElementHandler);
 
             PickCommand = new RelayCommand(OnPickCommandExecuted);
-            ChangeCommand = new RelayCommand(OnChangeCommandExecuted);
+            ChangeCommand = new RelayCommand<IList>(OnChangeCommandExecuted);
         }
-
+        
         private void OnPickCommandExecuted()
         {
             _pickElementEvent.Raise();
         }
-
-        private void OnChangeCommandExecuted()
+        
+        private void OnChangeCommandExecuted(IList selectedItems)
         {
-            if (SelectedItems == null)
-            {
-                MessageBox.Show("SelectedItems не инициализирован.");
-                return;
-            }
-
-            if (SelectedItems.Count == 0)
+            if (selectedItems.Count == 0)
             {
                 MessageBox.Show("Нет выделенных элементов для изменения11.");
                 return;
             }
-
-           
-
+            
+            SelectedItems.Clear();
+            foreach (IFamilyViewModel item in selectedItems)
+            {
+                SelectedItems.Add(item);
+            }
+            
+            _changeElementHandler.RevitElements = SelectedItems;
             _changeElementEvent.Raise();
         }
 
@@ -105,6 +106,35 @@ namespace RevitTest.ViewModel
 
             public void Execute(object parameter) => _execute?.Invoke();
 
+        }
+        
+        public class RelayCommand<T> : ICommand
+        {
+            private readonly Action<T> _execute;
+            private readonly Func<T, bool> _canExecute;
+
+            public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
+            {
+                _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+                _canExecute = canExecute;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return _canExecute == null || _canExecute((T)parameter);
+            }
+
+            public void Execute(object parameter)
+            {
+                _execute((T)parameter);
+            }
+
+            public event EventHandler CanExecuteChanged;
+
+            public void RaiseCanExecuteChanged()
+            {
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
     }
