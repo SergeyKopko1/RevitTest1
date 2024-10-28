@@ -1,13 +1,12 @@
 ﻿using Autodesk.Revit.DB;
-namespace RevitTest.ViewModel
+namespace RevitTest.ViewModel;
+
+public interface IFamilyTypeViewModel
 {
-    public interface IFamilyTypeViewModel
-    {
-        string Name { get; }
-        ElementId Id { get; }
+    string Name { get; }
+    ElementId Id { get; }
 
 
 
      
-    }
 }
