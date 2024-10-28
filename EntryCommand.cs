@@ -7,7 +7,7 @@ using RevitTest.ViewModel;
 namespace RevitTest.ComponentRevit
 {
     [Transaction(TransactionMode.Manual)]
-    internal class RevitAPI : IExternalCommand
+    internal class EntryCommand : IExternalCommand
     {
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)

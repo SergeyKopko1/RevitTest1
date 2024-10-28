@@ -6,9 +6,9 @@ namespace RevitTest.ComponentRevit.Extensions.ExtenstionSelections
 {
     public class SelectionsFilter : ISelectionFilter
     {
-        private readonly Func<Element, bool> _criteria;
+        private readonly Predicate<Element> _criteria;
 
-        public SelectionsFilter(Func<Element, bool> criteria)
+        public SelectionsFilter(Predicate<Element> criteria)
         {
             _criteria = criteria;
         }

@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
+
 namespace RevitTest.ComponentRevit.Handlers
 {
     public class ChangeElementHandler : IExternalEventHandler
@@ -33,10 +34,7 @@ namespace RevitTest.ComponentRevit.Handlers
                     if (item is WindowFamilyTypeViewModel windowFamily)
                     {
           
-                        var collector = new FilteredElementCollector(doc)
-                            .OfClass(typeof(FamilySymbol))
-                            .Cast<FamilySymbol>()
-                            .FirstOrDefault(f => f.Name == windowFamily.Name);
+                        var collector = doc.GetElement(item.Id);
 
                         if (collector == null)
                         {

@@ -5,7 +5,7 @@ namespace RevitTest.ViewModel
     {
         string Name { get; }
         ElementId Id { get; }
-        bool IsSelected { get; set; }
+
 
 
      

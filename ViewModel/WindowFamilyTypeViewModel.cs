@@ -4,28 +4,27 @@ namespace RevitTest.ViewModel
 {
     internal class WindowFamilyTypeViewModel : ViewModelBase, IFamilyTypeViewModel
     {
-        public WindowFamilyTypeViewModel(string name, ElementId id, bool isSelected)
+        public WindowFamilyTypeViewModel(string name, ElementId id)
         {
             Name = name;
 
             Id = id;
-            IsSelected = isSelected;
+  
         }
 
-        public string Name { get; }
-
+        private string _name;
 
         public ElementId Id { get; }
 
-        private bool _isSelected;
-        public bool IsSelected
+
+        public string Name
         {
-            get => _isSelected;
+            get => _name;
             set
             {
-                if (_isSelected == value) return;
-                _isSelected = value;
-                OnPropertyChanged(nameof(IsSelected));
+                if (_name == value) return;
+                _name = value;
+                OnPropertyChanged(nameof(_name));
             }
         }
     }

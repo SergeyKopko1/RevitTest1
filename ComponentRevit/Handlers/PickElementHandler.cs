@@ -55,7 +55,7 @@ namespace RevitTest.ComponentRevit.Handlers
                         string name = windowTypeElement.Name;
       
 
-                        var viewModel = new WindowFamilyTypeViewModel(name, uniqueTypeId, false);
+                        var viewModel = new WindowFamilyTypeViewModel(name, uniqueTypeId);
                         _mainViewModel.AddRevitElement(viewModel);
                     }
                 }
