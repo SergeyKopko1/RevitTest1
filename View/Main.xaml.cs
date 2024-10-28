@@ -1,14 +1,12 @@
 ﻿using System.Windows;
 
-namespace RevitTest.View
+namespace RevitTest.View;
+
+public partial class Main : Window
 {
-
-    public partial class Main : Window
+    public Main()
     {
-        public Main()
-        {
-            InitializeComponent();
-        }
-
+        InitializeComponent();
     }
+
 }
