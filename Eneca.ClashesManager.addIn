@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>Eneca.ClashesManager</Name>
+		<Assembly>C:\ProgramData\Autodesk\Revit\Addins\2021\Eneca\RevitTest\RevitTest.dll</Assembly>
+		<FullClassName>RevitTest.Application</FullClassName>
+		<AddInId>9CF15C42-FD1B-48CB-8029-575388BCB987</AddInId>
+		<VendorId>Eneca</VendorId>
+		<VendorDescription>ClashesManager</VendorDescription>
+	</AddIn>
+</RevitAddIns>

@@ -45,9 +45,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-rc.2.24473.5" />
         <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*" />
+        <PackageReference Include="Nice3point.Revit.Toolkit" Version="2021.2.3" />
     </ItemGroup>    
     
     <ItemGroup>   
@@ -80,5 +83,6 @@
         <Authors>Eneca</Authors>  
         <AssemblyVersion>1.0.0.24</AssemblyVersion>  
         <FileVersion>1.0.0.24</FileVersion>  
+        <ApplicationManifest>Eneca.ClashesManager.addIn</ApplicationManifest>  
     </PropertyGroup>  
 </Project>
