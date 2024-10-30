@@ -83,6 +83,5 @@
         <Authors>Eneca</Authors>  
         <AssemblyVersion>1.0.0.24</AssemblyVersion>  
         <FileVersion>1.0.0.24</FileVersion>  
-        <ApplicationManifest>Eneca.ClashesManager.addIn</ApplicationManifest>  
     </PropertyGroup>  
 </Project>
