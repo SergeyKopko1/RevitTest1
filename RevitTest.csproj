@@ -54,11 +54,18 @@
     </ItemGroup>    
     
     <ItemGroup>   
-        <None Remove=".gitignore" />  
+        <None Remove=".gitignore" />   
+        <None Remove="Resources\Icons\revit.png" />  
         <Compile Remove="packages\**" />  
         <EmbeddedResource Remove="packages\**" />  
         <Page Remove="packages\**" />  
         <None Remove="packages\**" />  
+    </ItemGroup>    
+    
+    <ItemGroup>
+      <Resource Include="Resources\Icons\revit.png">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
       
     <Target Name="CopyFiles" AfterTargets="CoreBuild">  
@@ -83,6 +90,5 @@
         <Authors>Eneca</Authors>  
         <AssemblyVersion>1.0.0.24</AssemblyVersion>  
         <FileVersion>1.0.0.24</FileVersion>  
-        <ApplicationManifest>Eneca.ClashesManager.addIn</ApplicationManifest>  
     </PropertyGroup>  
 </Project>

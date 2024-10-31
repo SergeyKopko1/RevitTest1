@@ -1,8 +1,9 @@
 ﻿using Autodesk.Revit.DB;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RevitTest.ViewModel;
 
-internal class WindowFamilyTypeViewModel : ViewModelBase, IFamilyTypeViewModel
+internal class WindowFamilyTypeViewModel : ObservableObject, IFamilyTypeViewModel
 {
     public WindowFamilyTypeViewModel(string name, ElementId id)
     {

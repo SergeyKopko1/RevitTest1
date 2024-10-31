@@ -88,13 +88,29 @@
                 IsReadOnly="True"
                 Text="{Binding ElementName=ListBox, Path=SelectedItems.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
-
         <Button
-            Margin="0,0,0,20"
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="20,0,0,20"
             Command="{Binding ChangeCommand}"
             CommandParameter="{Binding ElementName=ListBox, Path=SelectedItems}"
             Content="Выполнить"
             IsEnabled="{Binding ElementName=ListBox, Path=SelectedItems.Count, Converter={StaticResource IntToBooleanConverter}}"
-            Style="{StaticResource ChangeButtonStyle}" />
+            Style="{StaticResource ChangeButtonStyle}" 
+            HorizontalAlignment="Left"
+            Width="170"
+            Height="25"
+           />
+
+        <Button
+            Grid.Row="0"
+            Grid.Column="1"
+            Width="170"
+            Height="25"
+            Margin="0,0,20,20"
+            Command="{Binding OpenSettingsCommand}"
+            Content="Настройки"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
