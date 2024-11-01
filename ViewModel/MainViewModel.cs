@@ -1,61 +1,64 @@
-﻿using Autodesk.Revit.UI;
-using Nice3point.Revit.Toolkit.External.Handlers;
-using RevitTest.ComponentRevit.Handlers;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using RevitTest.Interfaces;
+using RevitTest.Services;
+using RevitTest.View;
 
 namespace RevitTest.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public partial class MainViewModel : ObservableObject
     {
         private readonly IPickElementService _pickElementService;
         private readonly IChangeElementService _changeElementService;
+
+
+        private readonly SettingsViewModel _settingsViewModel;
+
         public Dispatcher UiDispatcher { get; set; }
 
-        private ObservableCollection<IFamilyTypeViewModel> _revitElements = new();
-        public ObservableCollection<IFamilyTypeViewModel> RevitElements
-        {
-            get => _revitElements;
-            set
-            {
-                _revitElements = value;
-                OnPropertyChanged(nameof(RevitElements));
-            }
-        }
+        [ObservableProperty] private ObservableCollection<IFamilyTypeViewModel> _revitElements = [];
 
-        private ObservableCollection<IFamilyTypeViewModel> _selectedItems = new();
-        public ObservableCollection<IFamilyTypeViewModel> SelectedItems
-        {
-            get => _selectedItems;
-            set
-            {
-                _selectedItems = value;
-                OnPropertyChanged(nameof(SelectedItems));
-            }
-        }
-
-        public ICommand PickCommand { get; }
-        public ICommand ChangeCommand { get; }
+        [ObservableProperty] private ObservableCollection<IFamilyTypeViewModel> _selectedItems = [];
 
         public MainViewModel(IPickElementService pickElementService, IChangeElementService changeElementService)
         {
             _pickElementService = pickElementService;
             _changeElementService = changeElementService;
 
-            PickCommand = new RelayCommand(OnPickCommandExecuted);
-            ChangeCommand = new RelayCommand<IList>(OnChangeCommandExecuted);
+            _settingsViewModel = new SettingsViewModel();
+
+            _pickElementService.ElementsCleared += ClearRevitElements;
+            _pickElementService.ElementsAdded += AddRevitElement;
+        
+            if (_changeElementService is ChangeElementInterface changeElementInterface)
+            {
+                changeElementInterface.SetSettingsViewModel(_settingsViewModel);
+            }
         }
 
-        private async void OnPickCommandExecuted()
+        [RelayCommand]
+        private void OpenSettings()
+        {
+            var settingsWindow = new Settings
+            {
+                DataContext = _settingsViewModel 
+            };
+            settingsWindow.ShowDialog();
+        }
+
+        [RelayCommand]
+        private async void OnPick()
         {
             await _pickElementService.ExecutePickAsync();
         }
 
-        private async void OnChangeCommandExecuted(IList selectedItems)
+
+        [RelayCommand]
+        private async void OnChange(IList selectedItems)
         {
             if (selectedItems.Count == 0)
             {
@@ -63,12 +66,12 @@ namespace RevitTest.ViewModel
                 return;
             }
 
-            SelectedItems.Clear();
+            _selectedItems.Clear();
             foreach (IFamilyTypeViewModel item in selectedItems)
             {
-                SelectedItems.Add(item);
+                _selectedItems.Add(item);
             }
-            _changeElementService.SelectedItems = SelectedItems;
+            _changeElementService.SelectedItems = _selectedItems;
 
             await _changeElementService.ExecuteChangeAsync();
         }
@@ -77,8 +80,8 @@ namespace RevitTest.ViewModel
         {
             UiDispatcher.Invoke(() =>
             {
-                RevitElements.Add(element);
-                OnPropertyChanged(nameof(RevitElements));
+                _revitElements.Add(element);
+                OnPropertyChanged(nameof(_revitElements));
             });
         }
 
@@ -86,55 +89,10 @@ namespace RevitTest.ViewModel
         {
             UiDispatcher.Invoke(() =>
             {
-                RevitElements.Clear();
-                OnPropertyChanged(nameof(RevitElements));
+                _revitElements.Clear();
+                OnPropertyChanged(nameof(_revitElements));
             });
         }
-
-        public class RelayCommand : ICommand
-        {
-            private readonly Action _execute;
-            private readonly Func<bool> _canExecute;
-            public event EventHandler CanExecuteChanged;
-
-            public RelayCommand(Action execute, Func<bool> canExecute = null)
-            {
-                _execute = execute;
-                _canExecute = canExecute;
-            }
-
-            public bool CanExecute(object parameter) => _canExecute?.Invoke() ?? true;
-
-            public void Execute(object parameter) => _execute?.Invoke();
-        }
-
-        public class RelayCommand<T> : ICommand
-        {
-            private readonly Action<T> _execute;
-            private readonly Func<T, bool> _canExecute;
-
-            public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
-            {
-                _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-                _canExecute = canExecute;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-                return _canExecute == null || _canExecute((T)parameter);
-            }
-
-            public void Execute(object parameter)
-            {
-                _execute((T)parameter);
-            }
-
-            public event EventHandler CanExecuteChanged;
-
-            public void RaiseCanExecuteChanged()
-            {
-                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
     }
+
 }

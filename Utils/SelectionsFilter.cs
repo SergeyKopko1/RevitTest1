@@ -1,8 +1,8 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI.Selection;
-using System;
 
-namespace RevitTest.ComponentRevit.Extensions.ExtenstionSelections;
+
+namespace RevitTest.Utils;
 
 public class SelectionsFilter : ISelectionFilter
 {

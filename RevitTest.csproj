@@ -54,11 +54,18 @@
     </ItemGroup>    
     
     <ItemGroup>   
-        <None Remove=".gitignore" />  
+        <None Remove=".gitignore" />   
+        <None Remove="Resources\Icons\revit.png" />  
         <Compile Remove="packages\**" />  
         <EmbeddedResource Remove="packages\**" />  
         <Page Remove="packages\**" />  
         <None Remove="packages\**" />  
+    </ItemGroup>    
+    
+    <ItemGroup>
+      <Resource Include="Resources\Icons\revit.png">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
       
     <Target Name="CopyFiles" AfterTargets="CoreBuild">  

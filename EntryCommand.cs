@@ -3,11 +3,13 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Nice3point.Revit.Toolkit.External.Handlers;
-using RevitTest.ComponentRevit.Handlers;
+using RevitTest.Services;
+using RevitTest.Interfaces;
 using RevitTest.View;
 using RevitTest.ViewModel;
-
 using System.Windows.Threading;
+
+
 
 namespace RevitTest
 {
@@ -16,27 +18,28 @@ namespace RevitTest
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-
             var serviceCollection = new ServiceCollection();
 
-            var asyncEventHandler = new AsyncEventHandler();
-            serviceCollection.AddSingleton(asyncEventHandler);
-            serviceCollection.AddSingleton<IPickElementService, PickElementService>();
-            serviceCollection.AddSingleton<IChangeElementService, ChangeElementService>();
+            serviceCollection.AddSingleton<AsyncEventHandler>();
+            serviceCollection.AddSingleton<IPickElementService, PickElementInterface>();
+            serviceCollection.AddSingleton<IChangeElementService, ChangeElementInterface>();
             serviceCollection.AddSingleton<MainViewModel>();
+            serviceCollection.AddSingleton<SettingsViewModel>();
+
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
-
             var mainViewModel = serviceProvider.GetRequiredService<MainViewModel>();
-          
-            var thread = new Thread(() => ThreadEntry(mainViewModel));
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.IsBackground = true;
-            thread.Start();
+
+
+            var thread_one = new Thread(() => ThreadEntry(mainViewModel));
+            thread_one.SetApartmentState(ApartmentState.STA);
+            thread_one.IsBackground = true;
+            thread_one.Start();
+
+
 
             return Result.Succeeded;
         }
-
 
         private void ThreadEntry(MainViewModel mainViewModel)
         {
