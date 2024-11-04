@@ -45,9 +45,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-rc.2.24473.5" />
-        <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).1.*" />
         <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Toolkit" Version="2021.2.3" />
@@ -65,6 +65,10 @@
       <Resource Include="Resources\Icons\revit.png">
         <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Resource>
+    </ItemGroup>    
+    
+    <ItemGroup>
+      <ProjectReference Include="C:\Users\candy\Downloads\windows-library-ui-develop-Lappo\EnecaUI\EnecaUI.csproj" />
     </ItemGroup>
       
     <Target Name="CopyFiles" AfterTargets="CoreBuild">  
