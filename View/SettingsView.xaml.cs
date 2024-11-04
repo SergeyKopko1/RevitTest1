@@ -4,9 +4,9 @@
 namespace RevitTest.View
 {
  
-    public partial class Settings : Window
+    public partial class SettingsView : Window
     {
-        public Settings()
+        public SettingsView()
         {
             InitializeComponent();
             

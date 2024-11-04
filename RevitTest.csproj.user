@@ -17,12 +17,12 @@
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="View\Settings.xaml.cs">
+    <Compile Update="View\SettingsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="View\Settings.xaml">
+    <Page Update="View\SettingsView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

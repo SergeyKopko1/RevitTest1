@@ -1,4 +1,4 @@
-# Visual Studio specific
+﻿# Visual Studio specific
 .vs/
 .vscode/
 *.suo

@@ -6,27 +6,19 @@ using System.Windows;
 namespace RevitTest.ViewModel
 {
     public partial class SettingsViewModel : ObservableObject
-
-    
     {
-        [ObservableProperty] public  double _widthIncrement = new();
-
-        [ObservableProperty] public double _heightIncrement = new();
-
-        [ObservableProperty] public  bool _isSelectedWidth = true;
-
-        [ObservableProperty] public  bool _isSelectedHeight = true;
-
-
+        [ObservableProperty] private double _widthIncrement;
+        [ObservableProperty] private double _heightIncrement;
+        [ObservableProperty] private bool _isSelectedWidth = true;
+        [ObservableProperty] private bool _isSelectedHeight = true;
 
         [RelayCommand]
         private void Save()
         {
             try
             {
-                var settingsWindow = new Settings();
+                var settingsWindow = new SettingsView();
                 settingsWindow.Close();
-         
             }
             catch (Exception ex)
             {

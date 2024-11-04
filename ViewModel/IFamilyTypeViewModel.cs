@@ -6,7 +6,12 @@ public interface IFamilyTypeViewModel
     string Name { get; }
     ElementId Id { get; }
 
+    string Category { get; }
+
+    bool IsSelected { get; set; }
 
 
-     
+
+
+
 }

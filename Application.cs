@@ -1,4 +1,4 @@
-﻿using Nice3point.Revit.Extensions;
+using Nice3point.Revit.Extensions;
 using Nice3point.Revit.Toolkit.External;
 
 
@@ -8,8 +8,8 @@ public class Application : ExternalApplication
 {
     public override void OnStartup()
     {
-        var panel = Application.CreatePanel("Manage", tabName: "Eneca");
-        var showButton = panel.AddPushButton<EntryCommand>("Clashes\nManager");
+        var panel = Application.CreatePanel("Test", tabName: "Demo");
+        var showButton = panel.AddPushButton<EntryCommand>("Test\nManager");
 
 
         showButton.SetLargeImage("pack://application:,,,/RevitTest;component/Resources/Icons/revit.png");
@@ -21,6 +21,6 @@ public class Application : ExternalApplication
 
     public override void OnShutdown()
     {
-        
+
     }
 }
