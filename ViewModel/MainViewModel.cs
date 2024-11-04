@@ -5,16 +5,18 @@ using System.Windows.Threading;
 using Autodesk.Revit.DB;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using RevitTest.Interfaces;
 using RevitTest.Services;
 using RevitTest.View;
 
 namespace RevitTest.ViewModel
 {
-    public partial class MainViewModel : ObservableObject
+    public partial class MainViewModel : ObservableObject, IDisposable
     {
-        private readonly IPickElementInterface _pickElementService;
-        private readonly IChangeElementInterface _changeElementService;
+        private readonly IPickElement _pickElementService;
+        private readonly IChangeElement _changeElementService;
+        private readonly IServiceProvider _serviceProvider;
 
 
         private readonly SettingsViewModel _settingsViewModel;
@@ -27,22 +29,44 @@ namespace RevitTest.ViewModel
 
         [ObservableProperty] private ObservableCollection<IFamilyTypeViewModel> _selectedItems = [];
 
-        public MainViewModel(IPickElementInterface pickElementService, IChangeElementInterface changeElementService, SettingsViewModel settingsViewModel)
+        public MainViewModel(IPickElement pickElementService, IChangeElement changeElementService, SettingsViewModel settingsViewModel, IServiceProvider serviceProvider)
         {
             _pickElementService = pickElementService;
             _changeElementService = changeElementService;
             _settingsViewModel = settingsViewModel;
+            _serviceProvider = serviceProvider;
 
 
 
-            _pickElementService.ElementsCleared += ClearRevitElements;
-            _pickElementService.ElementsAdded += AddRevitElementAndUpdateGroups;
+            _pickElementService.ElementsCleared += OnElementsCleared;
+            _pickElementService.ElementsAdded += OnElementsAdded;
 
             if (_changeElementService is ChangeElementService changeElementInterface)
             {
                 changeElementInterface.SetSettingsViewModel(_settingsViewModel);
             }
         }
+
+
+        public void Dispose()
+        {
+            if (_pickElementService != null)
+            {
+                _pickElementService.ElementsCleared -= OnElementsCleared;
+                _pickElementService.ElementsAdded -= OnElementsAdded;
+            }
+        }
+
+        private void OnElementsAdded(IFamilyTypeViewModel el)
+        {
+            AddRevitElementAndUpdateGroups(el);
+        }
+
+        private void OnElementsCleared()
+        {
+            ClearRevitElements();
+        }
+
 
         private void UpdateSelectedItems(IFamilyTypeViewModel element)
         {
@@ -63,13 +87,13 @@ namespace RevitTest.ViewModel
         public int SelectedItemsCount => SelectedItems.Count;
 
 
-        [RelayCommand]
+       [RelayCommand]
         private void OpenSettings()
         {
-            var settingsWindow = new SettingsView
-            {
-                DataContext = _settingsViewModel
-            };
+           
+            var settingsWindow = _serviceProvider.GetRequiredService<SettingsView>();
+            settingsWindow.DataContext = _serviceProvider.GetRequiredService<SettingsViewModel>();
+
             settingsWindow.ShowDialog();
         }
 

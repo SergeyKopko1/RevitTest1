@@ -25,8 +25,9 @@ namespace RevitTest
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddSingleton<AsyncEventHandler>();
-            serviceCollection.AddSingleton<IPickElementInterface, PickElementService>();
-            serviceCollection.AddSingleton<IChangeElementInterface, ChangeElementService>();
+            serviceCollection.AddSingleton<IPickElement, PickElementService>();
+            serviceCollection.AddSingleton<IChangeElement, ChangeElementService>();
+            serviceCollection.AddSingleton<AppSettings>();
             serviceCollection.AddSingleton<MainViewModel>();
             serviceCollection.AddSingleton<SettingsView>();
             serviceCollection.AddSingleton<SettingsViewModel>();

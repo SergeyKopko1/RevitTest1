@@ -3,7 +3,7 @@
 
 namespace RevitTest.Interfaces
 {
-    public interface IChangeElementInterface
+    public interface IChangeElement
     {
         ICollection<IFamilyTypeViewModel> SelectedItems { get; set; }
         Task ExecuteChangeAsync();

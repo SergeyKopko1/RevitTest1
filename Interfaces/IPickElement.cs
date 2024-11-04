@@ -3,7 +3,7 @@
 
 namespace RevitTest.Interfaces
 {
-    public interface IPickElementInterface
+    public interface IPickElement
     {
         event Action ElementsCleared;
         event Action<IFamilyTypeViewModel> ElementsAdded;

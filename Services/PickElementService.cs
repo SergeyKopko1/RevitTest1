@@ -8,7 +8,7 @@ using RevitTest.ViewModel;
 
 namespace RevitTest.Services
 {
-    public class PickElementService : IPickElementInterface
+    public class PickElementService : IPickElement
     {
         private readonly AsyncEventHandler _eventHandler;
         private MainViewModel _mainViewModel;

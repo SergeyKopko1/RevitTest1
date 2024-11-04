@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace RevitTest.Services;
 
-public class ChangeElementService : IChangeElementInterface
+public class ChangeElementService : IChangeElement
 {
     private readonly AsyncEventHandler _eventHandler;
     private SettingsViewModel _settingsViewModel;
@@ -23,8 +23,6 @@ public class ChangeElementService : IChangeElementInterface
     {
         _settingsViewModel = settingsViewModel;
     }
-
-    [Obsolete]
     public async Task ExecuteChangeAsync()
     {
         await _eventHandler.RaiseAsync(app =>
@@ -40,48 +38,50 @@ public class ChangeElementService : IChangeElementInterface
                 {
                     if (item is WindowFamilyTypeViewModel)
                     {
-                        var collector = doc.GetElement(item.Id);
-                        var widthParam = collector.get_Parameter(BuiltInParameter.WINDOW_WIDTH);
-                        var heightParam = collector.get_Parameter(BuiltInParameter.WINDOW_HEIGHT);
-
-                        if (widthParam != null && heightParam != null && _settingsViewModel != null)
-                        {
-
-
-                            double widthDefault = widthParam.AsDouble();
-                            double heightDefault = heightParam.AsDouble();
-
-                            if (_settingsViewModel.IsSelectedWidth)
-                            {
-                                double widthIncrement = UnitUtils.ConvertToInternalUnits(_settingsViewModel.WidthIncrement, DisplayUnitType.DUT_MILLIMETERS);
-                                widthParam.Set(widthIncrement);
-                            }
-                            else
-                            {
-                                widthParam.Set(widthDefault);
-                            }
-
-
-                            if (_settingsViewModel.IsSelectedHeight)
-                            {
-                                double heightIncrement = UnitUtils.ConvertToInternalUnits(_settingsViewModel.HeightIncrement, DisplayUnitType.DUT_MILLIMETERS);
-                                heightParam.Set(heightIncrement);
-                            }
-                            else
-                            {
-                                heightParam.Set(heightDefault);
-                            }
-
-                        }
+                        ProcessWindowElement(doc, item);
                     }
                 }
 
                 trans.Commit();
             }
 
-            MessageBox.Show($"Изменение размеров для {SelectedItems.Count} окон завершено.");
+            NotifyUser(SelectedItems.Count);
         });
     }
+
+    private void ProcessWindowElement(Document doc, IFamilyTypeViewModel item)
+    {
+        var collector = doc.GetElement(item.Id);
+        var widthParam = collector.get_Parameter(BuiltInParameter.WINDOW_WIDTH);
+        var heightParam = collector.get_Parameter(BuiltInParameter.WINDOW_HEIGHT);
+
+        if (widthParam != null && heightParam != null && _settingsViewModel != null)
+        {
+            AdjustParameter(widthParam, _settingsViewModel.IsSelectedWidth, _settingsViewModel.WidthIncrement);
+            AdjustParameter(heightParam, _settingsViewModel.IsSelectedHeight, _settingsViewModel.HeightIncrement);
+        }
+    }
+
+    private void AdjustParameter(Parameter parameter, bool isSelected, double incrementValue)
+    {
+        double defaultValue = parameter.AsDouble();
+
+        if (isSelected)
+        {
+            double increment = UnitUtils.ConvertToInternalUnits(incrementValue, DisplayUnitType.DUT_MILLIMETERS);
+            parameter.Set(increment);
+        }
+        else
+        {
+            parameter.Set(defaultValue);
+        }
+    }
+
+    private void NotifyUser(int itemCount)
+    {
+        MessageBox.Show($"Изменение размеров для {itemCount} окон завершено.");
+    }
+
 }
 
 
