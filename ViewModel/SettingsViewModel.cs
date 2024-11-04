@@ -24,7 +24,7 @@ namespace RevitTest.ViewModel
         {
             try
             {
-                var settingsWindow = new Settings();
+                var settingsWindow = new SettingsView();
                 settingsWindow.Close();
          
             }

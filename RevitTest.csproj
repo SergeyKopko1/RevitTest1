@@ -54,7 +54,6 @@
     </ItemGroup>    
     
     <ItemGroup>   
-        <None Remove=".gitignore" />   
         <None Remove="Resources\Icons\revit.png" />  
         <Compile Remove="packages\**" />  
         <EmbeddedResource Remove="packages\**" />  
