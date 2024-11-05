@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RevitTest.Interfaces;
 using RevitTest.Services;
 using RevitTest.View;
+using RevitTest.Model;
 
 namespace RevitTest.ViewModel
 {
@@ -17,36 +18,32 @@ namespace RevitTest.ViewModel
         private readonly IPickElement _pickElementService;
         private readonly IChangeElement _changeElementService;
         private readonly IServiceProvider _serviceProvider;
-
-
         private readonly SettingsViewModel _settingsViewModel;
+        private readonly AppSettings _appSettings;
 
         public Dispatcher UiDispatcher { get; set; }
 
         [ObservableProperty] private ObservableCollection<CategoryGroup> _revitElementsGroupedByCategory = new();
+        [ObservableProperty] private ObservableCollection<IFamilyTypeViewModel> _revitElements = new();
+        [ObservableProperty] private ObservableCollection<IFamilyTypeViewModel> _selectedItems = new();
 
-        [ObservableProperty] private ObservableCollection<IFamilyTypeViewModel> _revitElements = [];
-
-        [ObservableProperty] private ObservableCollection<IFamilyTypeViewModel> _selectedItems = [];
-
-        public MainViewModel(IPickElement pickElementService, IChangeElement changeElementService, SettingsViewModel settingsViewModel, IServiceProvider serviceProvider)
+        public MainViewModel(
+            IPickElement pickElementService, 
+            IChangeElement changeElementService, 
+            SettingsViewModel settingsViewModel, 
+            IServiceProvider serviceProvider,
+            AppSettings appSettings
+            )
         {
             _pickElementService = pickElementService;
             _changeElementService = changeElementService;
             _settingsViewModel = settingsViewModel;
             _serviceProvider = serviceProvider;
-
-
+            _appSettings = appSettings;
 
             _pickElementService.ElementsCleared += OnElementsCleared;
             _pickElementService.ElementsAdded += OnElementsAdded;
-
-            if (_changeElementService is ChangeElementService changeElementInterface)
-            {
-                changeElementInterface.SetSettingsViewModel(_settingsViewModel);
-            }
         }
-
 
         public void Dispose()
         {
@@ -67,7 +64,6 @@ namespace RevitTest.ViewModel
             ClearRevitElements();
         }
 
-
         private void UpdateSelectedItems(IFamilyTypeViewModel element)
         {
             if (element.IsSelected)
@@ -86,11 +82,9 @@ namespace RevitTest.ViewModel
         }
         public int SelectedItemsCount => SelectedItems.Count;
 
-
-       [RelayCommand]
+        [RelayCommand]
         private void OpenSettings()
         {
-           
             var settingsWindow = _serviceProvider.GetRequiredService<SettingsView>();
             settingsWindow.DataContext = _serviceProvider.GetRequiredService<SettingsViewModel>();
 
@@ -114,7 +108,7 @@ namespace RevitTest.ViewModel
 
             _changeElementService.SelectedItems = SelectedItems;
 
-            await _changeElementService.ExecuteChangeAsync();
+            await _changeElementService.ExecuteChangeAsync(_appSettings);
         }
 
         private void ClearRevitElements()
@@ -125,6 +119,7 @@ namespace RevitTest.ViewModel
                 OnPropertyChanged(nameof(RevitElements));
             });
         }
+         
 
         private void AddRevitElementAndUpdateGroups(IFamilyTypeViewModel element)
         {

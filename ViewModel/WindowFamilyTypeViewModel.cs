@@ -14,7 +14,17 @@ namespace RevitTest.ViewModel
             Id = id;
             Category = category;
             IsSelected = false;
+
+            if (category == "Двери" || category == "Doors")
+            {
+                Icon = "/RevitTest;component/View/doorIcon.png";
+            }
+            else
+            {
+                Icon = "/RevitTest;component/View/windowIcon.png";
+            }
         }
+
 
         private bool _isSelected;
         public bool IsSelected
@@ -31,6 +41,7 @@ namespace RevitTest.ViewModel
 
         private string _name;
         private string _category;
+        private string _icon;
 
         public string Category
         {
@@ -43,13 +54,25 @@ namespace RevitTest.ViewModel
             }
         }
 
+        public string Icon
+        {
+            get => _icon;
+            set
+            {
+                if (_icon == value) return;
+                _icon = value;
+                OnPropertyChanged(nameof(_icon));
+            }
+        }
+
+
         public ElementId Id { get; }
 
         public string Name
         {
             get => _name;
             set
-            {
+            {           
                 if (_name == value) return;
                 _name = value;
                 OnPropertyChanged(nameof(_name));

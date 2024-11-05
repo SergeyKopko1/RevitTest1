@@ -54,7 +54,9 @@
     </ItemGroup>    
     
     <ItemGroup>   
-        <None Remove="Resources\Icons\revit.png" />  
+        <None Remove="Resources\Icons\revit.png" />   
+        <None Remove="View\doorIcon.png" />   
+        <None Remove="View\windowIcon.png" />  
         <Compile Remove="packages\**" />  
         <EmbeddedResource Remove="packages\**" />  
         <Page Remove="packages\**" />  
@@ -62,9 +64,15 @@
     </ItemGroup>    
     
     <ItemGroup>
+      <ProjectReference Include="..\..\..\..\Desktop\EnecaUI\EnecaUI.csproj" />
+    </ItemGroup>    
+    
+    <ItemGroup>
       <Resource Include="Resources\Icons\revit.png">
         <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Resource>
+      <Resource Include="View\doorIcon.png" />
+      <Resource Include="View\windowIcon.png" />
     </ItemGroup>
       
     <Target Name="CopyFiles" AfterTargets="CoreBuild">  

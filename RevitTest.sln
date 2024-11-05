@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevitTest", "RevitTest.csproj", "{70ABA0AD-C3EE-46DD-A38C-1DB0DC8B9065}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnecaUI", "..\..\..\..\Desktop\EnecaUI\EnecaUI.csproj", "{FE55399F-4C98-45A5-8B93-B51B08220197}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug R21|Any CPU = Debug R21|Any CPU
@@ -21,6 +23,14 @@ Global
 		{70ABA0AD-C3EE-46DD-A38C-1DB0DC8B9065}.Debug|Any CPU.Build.0 = Debug R21|Any CPU
 		{70ABA0AD-C3EE-46DD-A38C-1DB0DC8B9065}.Release|Any CPU.ActiveCfg = Release R21|Any CPU
 		{70ABA0AD-C3EE-46DD-A38C-1DB0DC8B9065}.Release|Any CPU.Build.0 = Release R21|Any CPU
+		{FE55399F-4C98-45A5-8B93-B51B08220197}.Debug R21|Any CPU.ActiveCfg = Debug Server|Any CPU
+		{FE55399F-4C98-45A5-8B93-B51B08220197}.Debug R21|Any CPU.Build.0 = Debug Server|Any CPU
+		{FE55399F-4C98-45A5-8B93-B51B08220197}.Debug Server|Any CPU.ActiveCfg = Debug Server|Any CPU
+		{FE55399F-4C98-45A5-8B93-B51B08220197}.Debug Server|Any CPU.Build.0 = Debug Server|Any CPU
+		{FE55399F-4C98-45A5-8B93-B51B08220197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE55399F-4C98-45A5-8B93-B51B08220197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE55399F-4C98-45A5-8B93-B51B08220197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE55399F-4C98-45A5-8B93-B51B08220197}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

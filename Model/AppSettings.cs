@@ -1,4 +1,4 @@
-﻿namespace RevitTest.ViewModel
+﻿namespace RevitTest.Model
 {
     public class AppSettings
     {

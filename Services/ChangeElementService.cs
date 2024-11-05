@@ -1,87 +1,78 @@
 ﻿using Autodesk.Revit.DB;
 using Nice3point.Revit.Toolkit.External.Handlers;
 using RevitTest.Interfaces;
+using RevitTest.Model;
 using RevitTest.ViewModel;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace RevitTest.Services;
-
-public class ChangeElementService : IChangeElement
+namespace RevitTest.Services
 {
-    private readonly AsyncEventHandler _eventHandler;
-    private SettingsViewModel _settingsViewModel;
-
-    public ICollection<IFamilyTypeViewModel> SelectedItems { get; set; } = new Collection<IFamilyTypeViewModel>();
-
-    public ChangeElementService(AsyncEventHandler eventHandler)
+    public class ChangeElementService : IChangeElement
     {
-        _eventHandler = eventHandler;
-    }
+        private readonly AsyncEventHandler _eventHandler;
 
-    public void SetSettingsViewModel(SettingsViewModel settingsViewModel)
-    {
-        _settingsViewModel = settingsViewModel;
-    }
-    public async Task ExecuteChangeAsync()
-    {
-        await _eventHandler.RaiseAsync(app =>
+        public ICollection<IFamilyTypeViewModel> SelectedItems { get; set; } = new Collection<IFamilyTypeViewModel>();
+
+        public ChangeElementService(AsyncEventHandler eventHandler)
         {
-            var uidoc = app.ActiveUIDocument;
-            var doc = uidoc.Document;
-
-            using (Transaction trans = new Transaction(doc, "Change Element"))
+            _eventHandler = eventHandler;
+        }
+        public async Task ExecuteChangeAsync(AppSettings settings)
+        {
+            await _eventHandler.RaiseAsync(app =>
             {
-                trans.Start();
+                var uidoc = app.ActiveUIDocument;
+                var doc = uidoc.Document;
 
-                foreach (var item in SelectedItems)
+                using (Transaction trans = new Transaction(doc, "Change Element"))
                 {
-                    if (item is WindowFamilyTypeViewModel)
+                    trans.Start();
+
+                    foreach (var item in SelectedItems)
                     {
-                        ProcessWindowElement(doc, item);
+                        if (item is WindowFamilyTypeViewModel)
+                        {
+                            ProcessWindowElement(doc, item, settings);
+                        }
                     }
+
+                    trans.Commit();
                 }
 
-                trans.Commit();
+                NotifyUser(SelectedItems.Count);
+            });
+        }
+        private void ProcessWindowElement(Document doc, IFamilyTypeViewModel item, AppSettings settings)
+        {
+            var collector = doc.GetElement(item.Id);
+            var widthParam = collector.get_Parameter(BuiltInParameter.WINDOW_WIDTH);
+            var heightParam = collector.get_Parameter(BuiltInParameter.WINDOW_HEIGHT);
+
+            if (widthParam != null && heightParam != null)
+            {
+                AdjustParameter(widthParam, settings.IsSelectedWidth, settings.WidthIncrement);
+                AdjustParameter(heightParam, settings.IsSelectedHeight, settings.HeightIncrement);
             }
-
-            NotifyUser(SelectedItems.Count);
-        });
-    }
-
-    private void ProcessWindowElement(Document doc, IFamilyTypeViewModel item)
-    {
-        var collector = doc.GetElement(item.Id);
-        var widthParam = collector.get_Parameter(BuiltInParameter.WINDOW_WIDTH);
-        var heightParam = collector.get_Parameter(BuiltInParameter.WINDOW_HEIGHT);
-
-        if (widthParam != null && heightParam != null && _settingsViewModel != null)
+        }
+        private void AdjustParameter(Parameter parameter, bool isSelected, double incrementValue)
         {
-            AdjustParameter(widthParam, _settingsViewModel.IsSelectedWidth, _settingsViewModel.WidthIncrement);
-            AdjustParameter(heightParam, _settingsViewModel.IsSelectedHeight, _settingsViewModel.HeightIncrement);
+            double defaultValue = parameter.AsDouble();
+
+            if (isSelected)
+            {
+                double increment = UnitUtils.ConvertToInternalUnits(incrementValue, DisplayUnitType.DUT_MILLIMETERS);
+                parameter.Set(increment);
+            }
+            else
+            {
+                parameter.Set(defaultValue);
+            }
+        }
+
+        private void NotifyUser(int itemCount)
+        {
+            MessageBox.Show($"Изменение размеров для {itemCount} окон завершено.");
         }
     }
-
-    private void AdjustParameter(Parameter parameter, bool isSelected, double incrementValue)
-    {
-        double defaultValue = parameter.AsDouble();
-
-        if (isSelected)
-        {
-            double increment = UnitUtils.ConvertToInternalUnits(incrementValue, DisplayUnitType.DUT_MILLIMETERS);
-            parameter.Set(increment);
-        }
-        else
-        {
-            parameter.Set(defaultValue);
-        }
-    }
-
-    private void NotifyUser(int itemCount)
-    {
-        MessageBox.Show($"Изменение размеров для {itemCount} окон завершено.");
-    }
-
 }
-
-

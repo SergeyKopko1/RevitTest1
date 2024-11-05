@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Nice3point.Revit.Toolkit.External.Handlers;
 using RevitTest.Interfaces;
+using RevitTest.Model;
 using RevitTest.Services;
 using RevitTest.View;
 using RevitTest.ViewModel;
@@ -29,8 +30,8 @@ namespace RevitTest
             serviceCollection.AddSingleton<IChangeElement, ChangeElementService>();
             serviceCollection.AddSingleton<AppSettings>();
             serviceCollection.AddSingleton<MainViewModel>();
-            serviceCollection.AddSingleton<SettingsView>();
-            serviceCollection.AddSingleton<SettingsViewModel>();
+            serviceCollection.AddTransient<SettingsView>();
+            serviceCollection.AddTransient<SettingsViewModel>();
 
 
             _serviceProvider = serviceCollection.BuildServiceProvider();
