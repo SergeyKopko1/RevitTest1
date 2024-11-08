@@ -31,9 +31,9 @@ namespace RevitTest.Services
 
                     foreach (var item in SelectedItems)
                     {
-                        if (item is WindowFamilyTypeViewModel)
+                        if (item is FamilyTypeViewModel)
                         {
-                            ProcessWindowElement(doc, item, settings);
+                            ProcessElement(doc, item, settings);
                         }
                     }
 
@@ -43,7 +43,7 @@ namespace RevitTest.Services
                 NotifyUser(SelectedItems.Count);
             });
         }
-        private void ProcessWindowElement(Document doc, IFamilyTypeViewModel item, AppSettings settings)
+        private void ProcessElement(Document doc, IFamilyTypeViewModel item, AppSettings settings)
         {
             var collector = doc.GetElement(item.Id);
             var widthParam = collector.get_Parameter(BuiltInParameter.WINDOW_WIDTH);
@@ -51,8 +51,8 @@ namespace RevitTest.Services
 
             if (widthParam != null && heightParam != null)
             {
-                AdjustParameter(widthParam, settings.IsSelectedWidth, settings.WidthIncrement);
-                AdjustParameter(heightParam, settings.IsSelectedHeight, settings.HeightIncrement);
+                AdjustParameter(widthParam, settings.IsSelectedWidth, settings.Width);
+                AdjustParameter(heightParam, settings.IsSelectedHeight, settings.Height);
             }
         }
         private void AdjustParameter(Parameter parameter, bool isSelected, double incrementValue)
@@ -72,7 +72,7 @@ namespace RevitTest.Services
 
         private void NotifyUser(int itemCount)
         {
-            MessageBox.Show($"Изменение размеров для {itemCount} окон завершено.");
+            MessageBox.Show($"Изменение размеров для {itemCount} завершено.");
         }
     }
 }

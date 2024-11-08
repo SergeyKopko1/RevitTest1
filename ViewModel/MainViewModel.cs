@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
-using Autodesk.Revit.DB;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using RevitTest.Interfaces;
-using RevitTest.Services;
 using RevitTest.View;
 using RevitTest.Model;
 
@@ -33,6 +30,7 @@ namespace RevitTest.ViewModel
             SettingsViewModel settingsViewModel, 
             IServiceProvider serviceProvider,
             AppSettings appSettings
+     
             )
         {
             _pickElementService = pickElementService;
@@ -85,10 +83,14 @@ namespace RevitTest.ViewModel
         [RelayCommand]
         private void OpenSettings()
         {
-            var settingsWindow = _serviceProvider.GetRequiredService<SettingsView>();
-            settingsWindow.DataContext = _serviceProvider.GetRequiredService<SettingsViewModel>();
+            var settingsView = _serviceProvider.GetRequiredService<SettingsView>();
+            var settingsViewModel = _serviceProvider.GetRequiredService<SettingsViewModel>();
 
-            settingsWindow.ShowDialog();
+            settingsViewModel.FamilyTypes = _selectedItems;
+            settingsViewModel.IsApplyToWorkset = _appSettings.IsApplyToWorkset;
+            settingsView.DataContext = settingsViewModel;
+
+            settingsView.ShowDialog();
         }
 
         [RelayCommand]
@@ -123,7 +125,7 @@ namespace RevitTest.ViewModel
 
         private void AddRevitElementAndUpdateGroups(IFamilyTypeViewModel element)
         {
-            if (element is WindowFamilyTypeViewModel windowElement)
+            if (element is FamilyTypeViewModel windowElement)
             {
                 windowElement.IsSelectedChanged += UpdateSelectedItems;
             }
@@ -136,7 +138,7 @@ namespace RevitTest.ViewModel
         private void UpdateGroupedElements()
         {
             var grouped = RevitElements
-                .GroupBy(e => e.Category)
+                .GroupBy(e => e.CategoryElement)
                 .Select(g => new CategoryGroup
                 {
                     Category = g.Key,

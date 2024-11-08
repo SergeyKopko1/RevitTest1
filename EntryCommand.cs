@@ -1,7 +1,6 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Nice3point.Revit.Toolkit.External.Handlers;
 using RevitTest.Interfaces;
@@ -9,17 +8,14 @@ using RevitTest.Model;
 using RevitTest.Services;
 using RevitTest.View;
 using RevitTest.ViewModel;
-using System;
-using System.Threading;
 using System.Windows.Threading;
 
 namespace RevitTest
 {
     [Transaction(TransactionMode.Manual)]
-    internal partial class EntryCommand : IExternalCommand, IDisposable
+    internal class EntryCommand : IExternalCommand, IDisposable
     {
         private MainView _mainWindow;
-        private SettingsView _settingsWindow;
         private readonly IServiceProvider _serviceProvider;
 
         public EntryCommand()
@@ -28,10 +24,11 @@ namespace RevitTest
             serviceCollection.AddSingleton<AsyncEventHandler>();
             serviceCollection.AddSingleton<IPickElement, PickElementService>();
             serviceCollection.AddSingleton<IChangeElement, ChangeElementService>();
+            serviceCollection.AddSingleton<IWorkset, WorksetService>();
             serviceCollection.AddSingleton<AppSettings>();
             serviceCollection.AddSingleton<MainViewModel>();
             serviceCollection.AddTransient<SettingsView>();
-            serviceCollection.AddTransient<SettingsViewModel>();
+            serviceCollection.AddSingleton<SettingsViewModel>();
 
 
             _serviceProvider = serviceCollection.BuildServiceProvider();

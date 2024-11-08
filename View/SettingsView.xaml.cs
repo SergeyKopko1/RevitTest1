@@ -12,11 +12,16 @@ namespace RevitTest.View
             
         }
 
-        private void closeClick(object sender, RoutedEventArgs e)
+
+        private void EnecaTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+          
+            e.Handled = !System.Text.RegularExpressions.Regex.IsMatch(e.Text, @"^[0-9]+$");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
-
     }
 }

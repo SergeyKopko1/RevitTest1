@@ -17,10 +17,4 @@ public class Application : ExternalApplication
         showButton.LongDescription = "This button opens the Clash Manager for reviewing and managing model clashes.";
         showButton.ToolTip = "Open Clash Manager";
     }
-
-
-    public override void OnShutdown()
-    {
-
-    }
 }

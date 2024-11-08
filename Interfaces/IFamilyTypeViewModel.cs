@@ -1,17 +1,12 @@
 ﻿using Autodesk.Revit.DB;
-namespace RevitTest.ViewModel;
+namespace RevitTest.Interfaces;
 
 public interface IFamilyTypeViewModel
 {
     string Name { get; }
     ElementId Id { get; }
 
-    string Category { get; }
+    string CategoryElement { get; }
 
     bool IsSelected { get; set; }
-
-
-
-
-
 }

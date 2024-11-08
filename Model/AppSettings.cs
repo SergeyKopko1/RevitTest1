@@ -2,9 +2,11 @@
 {
     public class AppSettings
     {
-        public double WidthIncrement { get; set; }
-        public double HeightIncrement { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
         public bool IsSelectedWidth { get; set; }
         public bool IsSelectedHeight { get; set; }
+
+        public bool IsApplyToWorkset {get; set;}
     }
 }

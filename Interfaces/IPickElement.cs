@@ -1,7 +1,4 @@
-﻿using RevitTest.ViewModel;
-
-
-namespace RevitTest.Interfaces
+﻿namespace RevitTest.Interfaces
 {
     public interface IPickElement
     {
